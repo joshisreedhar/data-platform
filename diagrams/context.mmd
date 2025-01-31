@@ -1,0 +1,22 @@
+C4Context
+title System Context diagram for Data Platform
+
+Person(business_user, "Business User", "Consumes data for analysis and reporting")
+Person(data_engineer, "Data Engineer", "Manages and maintains the data platform")
+Person(data_scientist, "Data Scientist", "Performs advanced analytics")
+
+System(data_platform, "Data Platform", "Enterprise Data Platform using Medallion Architecture")
+
+System_Ext(source_systems, "Source Systems", "External data sources (CRM, ERP, etc.)")
+System_Ext(bi_tools, "BI Tools", "Business Intelligence and Visualization Tools")
+System_Ext(ml_platforms, "ML Platforms", "Machine Learning Platforms")
+
+Rel(source_systems, data_platform, "Provides raw data")
+Rel(data_platform, bi_tools, "Provides processed data")
+Rel(data_platform, ml_platforms, "Provides feature-ready data")
+
+Rel(business_user, bi_tools, "Uses")
+Rel(data_scientist, ml_platforms, "Uses")
+Rel(data_engineer, data_platform, "Manages")
+
+UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

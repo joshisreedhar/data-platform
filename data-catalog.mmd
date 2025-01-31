@@ -1,0 +1,96 @@
+graph TB
+    %% Data Sources
+    subgraph Sources[Data Sources]
+        DW[Data Warehouses]
+        DL[Data Lakes]
+        DB[Databases]
+        BI[BI Tools]
+        ETL[ETL Tools]
+    end
+
+    %% Metadata Collection Layer
+    subgraph Collection[Metadata Collection Layer]
+        TM[Technical Metadata]
+        BM[Business Metadata]
+        OM[Operational Metadata]
+    end
+
+    %% Metadata Storage Layer
+    subgraph Storage[Metadata Storage Layer]
+        MR[Metadata Repository]
+        SI[Search Index]
+        subgraph MetadataTypes[Metadata Types]
+            MT1[Schema Definitions]
+            MT2[Data Lineage]
+            MT3[Business Glossary]
+            MT4[Usage Statistics]
+        end
+    end
+
+    %% Integration Layer
+    subgraph Integration[Integration Layer]
+        API[API Gateway]
+        CON[Source Connectors]
+        SYNC[Sync Engine]
+    end
+
+    %% Governance Layer
+    subgraph Governance[Governance Layer]
+        AC[Access Control]
+        CM[Compliance Management]
+        AT[Audit Trails]
+        DQ[Data Quality]
+    end
+
+    %% User Interface Layer
+    subgraph UI[User Interface Layer]
+        WEB[Web Interface]
+        SEARCH[Search & Discovery]
+        COLLAB[Collaboration Tools]
+        DOC[Documentation]
+    end
+
+    %% Connections
+    DW --> CON
+    DL --> CON
+    DB --> CON
+    BI --> CON
+    ETL --> CON
+
+    CON --> TM
+    CON --> BM
+    CON --> OM
+
+    TM --> MR
+    BM --> MR
+    OM --> MR
+
+    MR --> MT1
+    MR --> MT2
+    MR --> MT3
+    MR --> MT4
+
+    MR --> SI
+    SI --> SEARCH
+
+    API --> WEB
+    API --> SEARCH
+    API --> COLLAB
+    API --> DOC
+
+    MR --> AC
+    AC --> API
+    CM --> API
+    AT --> API
+    DQ --> API
+
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef source fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+    classDef storage fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef governance fill:#fbe9e7,stroke:#d84315,stroke-width:2px;
+    classDef ui fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+
+    class Sources source;
+    class Storage,MetadataTypes storage;
+    class Governance,AC,CM,AT,DQ governance;
+    class UI,WEB,SEARCH,COLLAB,DOC ui;

@@ -1,0 +1,11 @@
+{
+  "name": "data-platform-architecture",
+  "version": "1.0.0",
+  "description": "Data Platform Architecture Diagrams",
+  "scripts": {
+    "generate": "mmdc -i architecture.mmd -o architecture.png"
+  },
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^10.6.1"
+  }
+}

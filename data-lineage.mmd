@@ -1,0 +1,92 @@
+graph TB
+    %% Data Sources and Collectors
+    subgraph Sources[Data Sources]
+        S1[Databases]
+        S2[Data Lakes]
+        S3[ETL Tools]
+        S4[BI Tools]
+        S5[Applications]
+    end
+
+    %% Collection Methods
+    subgraph Collection[Lineage Collection]
+        C1[SQL Parser]
+        C2[Log Analyzer]
+        C3[API Collector]
+        C4[Manual Input]
+        
+        subgraph AutoDiscovery[Automated Discovery]
+            AD1[Schema Analysis]
+            AD2[Query Analysis]
+            AD3[Process Mining]
+        end
+    end
+
+    %% Storage Layer
+    subgraph Storage[Lineage Storage]
+        G1[Graph Database]
+        
+        subgraph Metadata[Metadata Store]
+            M1[Technical Metadata]
+            M2[Business Metadata]
+            M3[Operational Metadata]
+        end
+        
+        subgraph Relationships[Relationship Types]
+            R1[Column Level]
+            R2[Table Level]
+            R3[Process Level]
+            R4[Business Level]
+        end
+    end
+
+    %% Analysis Layer
+    subgraph Analysis[Analysis Engine]
+        A1[Impact Analysis]
+        A2[Root Cause Analysis]
+        A3[Dependency Analysis]
+        A4[Version Analysis]
+    end
+
+    %% Visualization Layer
+    subgraph Visualization[Visualization Layer]
+        V1[Graph View]
+        V2[Process Flow]
+        V3[Impact Maps]
+        V4[Timeline View]
+    end
+
+    %% Integration Layer
+    subgraph Integration[Integration Layer]
+        I1[APIs]
+        I2[Webhooks]
+        I3[Event Bus]
+    end
+
+    %% Connections
+    S1 & S2 & S3 & S4 & S5 --> C1 & C2 & C3
+    C1 & C2 & C3 & C4 --> G1
+    AutoDiscovery --> G1
+    
+    G1 --> M1 & M2 & M3
+    G1 --> R1 & R2 & R3 & R4
+    
+    G1 --> A1 & A2 & A3 & A4
+    A1 & A2 & A3 & A4 --> V1 & V2 & V3 & V4
+    
+    G1 --> I1 & I2 & I3
+    
+    %% Styling
+    classDef source fill:#e3f2fd,stroke:#1565c0,stroke-width:2px;
+    classDef collection fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
+    classDef storage fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px;
+    classDef analysis fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef visualization fill:#fce4ec,stroke:#c2185b,stroke-width:2px;
+    classDef integration fill:#e8eaf6,stroke:#3949ab,stroke-width:2px;
+    
+    class Sources,S1,S2,S3,S4,S5 source;
+    class Collection,C1,C2,C3,C4,AutoDiscovery,AD1,AD2,AD3 collection;
+    class Storage,G1,Metadata,M1,M2,M3,Relationships,R1,R2,R3,R4 storage;
+    class Analysis,A1,A2,A3,A4 analysis;
+    class Visualization,V1,V2,V3,V4 visualization;
+    class Integration,I1,I2,I3 integration;

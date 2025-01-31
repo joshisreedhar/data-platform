@@ -1,0 +1,35 @@
+C4Container
+title Container diagram for Data Platform
+
+Person(business_user, "Business User", "Consumes data for analysis and reporting")
+Person(data_engineer, "Data Engineer", "Manages and maintains the data platform")
+
+System_Boundary(c1, "Data Platform") {
+    Container(ingestion_layer, "Data Ingestion Layer", "Apache Spark, Delta Lake", "Ingests and validates raw data")
+    Container(bronze_layer, "Bronze Layer", "Delta Lake", "Raw data storage with metadata")
+    Container(silver_layer, "Silver Layer", "Delta Lake", "Cleaned and standardized data")
+    Container(gold_layer, "Gold Layer", "Delta Lake", "Business-level aggregates")
+    
+    Container(metadata_store, "Metadata Store", "Delta Lake", "Stores technical and business metadata")
+    Container(data_catalog, "Data Catalog", "REST API", "Data discovery and governance")
+    Container(orchestrator, "Orchestration Service", "Apache Airflow", "Manages data pipelines")
+    Container(monitoring, "Monitoring Service", "Prometheus, Grafana", "Platform monitoring and alerts")
+}
+
+System_Ext(source_systems, "Source Systems", "External data sources")
+System_Ext(bi_tools, "BI Tools", "Business Intelligence Tools")
+
+Rel(source_systems, ingestion_layer, "Sends data", "Various protocols")
+Rel(ingestion_layer, bronze_layer, "Stores raw data", "Delta Lake")
+Rel(bronze_layer, silver_layer, "Processes data", "Apache Spark")
+Rel(silver_layer, gold_layer, "Creates metrics", "Apache Spark")
+
+Rel(data_engineer, orchestrator, "Manages pipelines", "Web UI")
+Rel(business_user, bi_tools, "Analyzes data", "SQL/Web UI")
+Rel(bi_tools, gold_layer, "Reads data", "SQL")
+
+Rel(ingestion_layer, metadata_store, "Records metadata", "REST API")
+Rel(data_catalog, metadata_store, "Reads metadata", "REST API")
+Rel(orchestrator, monitoring, "Sends metrics", "REST API")
+
+UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")

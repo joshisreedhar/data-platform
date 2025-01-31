@@ -1,0 +1,49 @@
+C4Component
+title Component diagram for Data Platform
+
+Container_Boundary(bronze, "Bronze Layer") {
+    Component(ingest_service, "Ingestion Service", "PySpark", "Handles data ingestion")
+    Component(metadata_enrichment, "Metadata Enrichment", "PySpark", "Adds technical metadata")
+    Component(schema_validation, "Schema Validation", "PySpark", "Validates data schema")
+    Component(bronze_storage, "Bronze Storage", "Delta Lake", "Stores raw data")
+}
+
+Container_Boundary(silver, "Silver Layer") {
+    Component(data_cleaning, "Data Cleaning Service", "PySpark", "Cleanses data")
+    Component(data_quality, "Data Quality Service", "Great Expectations", "Validates data quality")
+    Component(standardization, "Standardization Service", "PySpark", "Standardizes data")
+    Component(silver_storage, "Silver Storage", "Delta Lake", "Stores cleaned data")
+}
+
+Container_Boundary(gold, "Gold Layer") {
+    Component(metrics_engine, "Metrics Engine", "PySpark", "Calculates business metrics")
+    Component(dim_modeling, "Dimensional Modeling", "PySpark", "Creates dimensional models")
+    Component(data_marts, "Data Marts", "Delta Lake", "Department-specific views")
+    Component(gold_storage, "Gold Storage", "Delta Lake", "Stores business metrics")
+}
+
+Container_Boundary(platform, "Platform Services") {
+    Component(pipeline_scheduler, "Pipeline Scheduler", "Airflow", "Schedules jobs")
+    Component(resource_manager, "Resource Manager", "Kubernetes", "Manages resources")
+    Component(monitoring_service, "Monitoring Service", "Prometheus", "Monitors platform")
+    Component(catalog_service, "Catalog Service", "REST API", "Data discovery")
+}
+
+Rel(ingest_service, metadata_enrichment, "Sends data")
+Rel(metadata_enrichment, schema_validation, "Validates")
+Rel(schema_validation, bronze_storage, "Stores")
+
+Rel(bronze_storage, data_cleaning, "Reads")
+Rel(data_cleaning, data_quality, "Validates")
+Rel(data_quality, standardization, "Standardizes")
+Rel(standardization, silver_storage, "Stores")
+
+Rel(silver_storage, metrics_engine, "Reads")
+Rel(metrics_engine, dim_modeling, "Models")
+Rel(dim_modeling, data_marts, "Creates")
+Rel(data_marts, gold_storage, "Stores")
+
+Rel(pipeline_scheduler, resource_manager, "Allocates")
+Rel(monitoring_service, catalog_service, "Updates")
+
+UpdateLayoutConfig($c4ShapeInRow="4", $c4BoundaryInRow="2")
